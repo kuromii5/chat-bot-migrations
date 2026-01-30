@@ -1,0 +1,9 @@
+FROM golang:1.25.6-alpine
+
+RUN go install github.com/rubenv/sql-migrate/...@latest
+
+WORKDIR /migrations
+
+COPY . .
+
+ENTRYPOINT ["sql-migrate", "up", "-env=chat_bot_db"]
