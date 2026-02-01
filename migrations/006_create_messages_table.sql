@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS core.messages (
     
     sender_role TEXT NOT NULL CHECK (sender_role IN ('AI', 'Human')),
     
-    content     TEXT NOT NULL CHECK (length(content) > 0 AND length(content) <= 1024),
+    content     TEXT NOT NULL CHECK (length(content) > 0 AND length(content) <= 2048),
     
     created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
