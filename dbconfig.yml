@@ -2,4 +2,4 @@ chat_bot_db:
   dialect: postgres
   datasource: host=${DB_CHAT_BOT_HOST} port=${DB_CHAT_BOT_PORT} user=${DB_CHAT_BOT_USER} password=${DB_CHAT_BOT_PASSWORD} dbname=${DB_CHAT_BOT_NAME} sslmode=disable
   dir: migrations
-  table: core.migrations
+  table: migrations
