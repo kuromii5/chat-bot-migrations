@@ -1,14 +1,13 @@
 -- +migrate Up
 
 CREATE TABLE IF NOT EXISTS core.tags (
-    id    SERIAL PRIMARY KEY,
-    name  TEXT NOT NULL UNIQUE
+    name TEXT PRIMARY KEY NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS core.profile_tags (
     user_id UUID REFERENCES core.profiles(user_id) ON DELETE CASCADE,
-    tag_id  INTEGER REFERENCES core.tags(id) ON DELETE CASCADE,
-    PRIMARY KEY (user_id, tag_id)
+    tag_name TEXT REFERENCES core.tags(name) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (user_id, tag_name)
 );
 
 -- +migrate Down
