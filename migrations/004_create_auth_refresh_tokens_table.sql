@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS auth.refresh_tokens (
     id          UUID DEFAULT uuidv7() PRIMARY KEY,
     user_id     UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
     token_hash  TEXT NOT NULL,
-    role        TEXT NOT NULL CHECK (role IN ('AI', 'Human')),
 
     user_agent  TEXT,
     ip_address  INET,
