@@ -11,16 +11,11 @@ COPY . .
 
 RUN cat <<EOF > /entrypoint.sh 
 #!/bin/sh
-set -x
-printenv | grep _USER
-
 envsubst < dbconfig.yml > dbconfig.yml.tmp && mv dbconfig.yml.tmp dbconfig.yml
-cat dbconfig.yml
 
 for f in migrations/*.sql; do
     if [ -f "\$f" ]; then
-    echo "Processing \$f"
-    envsubst < "\$f" > "\$f.tmp" && mv "\$f.tmp" "\$f"
+        envsubst < "\$f" > "\$f.tmp" && mv "\$f.tmp" "\$f"
     fi
 done
 
