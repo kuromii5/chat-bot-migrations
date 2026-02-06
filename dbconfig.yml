@@ -1,5 +1,5 @@
-chat_bot_db:
+chat-bot-db:
   dialect: postgres
-  datasource: host=${DB_CHAT_BOT_HOST} port=${DB_CHAT_BOT_PORT} user=${DB_CHAT_BOT_USER} password=${DB_CHAT_BOT_PASSWORD} dbname=${DB_CHAT_BOT_NAME} sslmode=disable
+  datasource: "host=${DB_CHAT_BOT_HOST} port=${DB_CHAT_BOT_PORT} user=${ADMIN_USER} password=${ADMIN_PASSWORD} dbname=${DB_CHAT_BOT_NAME} sslmode=${DB_CHAT_BOT_SSLMODE}"
   dir: migrations
   table: migrations
