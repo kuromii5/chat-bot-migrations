@@ -2,8 +2,17 @@ FROM golang:1.25.6-alpine
 
 RUN go install github.com/rubenv/sql-migrate/...@latest
 
+# for envsubst
+RUN apk add --no-cache gettext
+
 WORKDIR /migrations
 
 COPY . .
 
-ENTRYPOINT ["sql-migrate", "up", "-env=chat_bot_db"]
+RUN echo '#!bin/sh \
+for f in migrations/*.sql; do \
+envsubst < "$f" > "$f.tmp" && mv "$f.tmp" "$f"; \
+done; \
+sql-migrate up -env=chat-bot-db' > /entrypoint.sh && chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

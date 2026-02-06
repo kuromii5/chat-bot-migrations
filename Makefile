@@ -1,5 +1,5 @@
 DB_CHAT_BOT_HOST?=localhost
-DB_CHAT_BOT_NAME?=chat_bot_db
+DB_CHAT_BOT_NAME?=chat-bot-db
 DB_CHAT_BOT_USER?=postgres
 DB_CHAT_BOT_PASSWORD?=password
 DB_CHAT_BOT_PORT?=5432
@@ -19,7 +19,7 @@ up:
 	DB_CHAT_BOT_USER=$(DB_ADMIN_USER) \
 	DB_CHAT_BOT_PORT=$(DB_CHAT_BOT_PORT) \
 	DB_CHAT_BOT_PASSWORD=password \
-		sql-migrate up -env=chat_bot_db
+		sql-migrate up -env=chat-bot-db
 
 down:
 	@DB_CHAT_BOT_HOST=$(DB_CHAT_BOT_HOST) \
@@ -27,7 +27,7 @@ down:
 	DB_CHAT_BOT_USER=$(DB_ADMIN_USER) \
 	DB_CHAT_BOT_PORT=$(DB_CHAT_BOT_PORT) \
 	DB_CHAT_BOT_PASSWORD=password \
-		sql-migrate down -env=chat_bot_db -limit=$(DOWN_LIMIT)
+		sql-migrate down -env=chat-bot-db -limit=$(DOWN_LIMIT)
 
 status:
 	@DB_CHAT_BOT_HOST=$(DB_CHAT_BOT_HOST) \
@@ -35,7 +35,7 @@ status:
 	DB_CHAT_BOT_USER=$(DB_ADMIN_USER) \
 	DB_CHAT_BOT_PORT=$(DB_CHAT_BOT_PORT) \
 	DB_CHAT_BOT_PASSWORD=password \
-		sql-migrate status -env=chat_bot_db
+		sql-migrate status -env=chat-bot-db
 
 psql:
 	@PGPASSWORD=$(DB_CHAT_BOT_PASSWORD) psql -h $(DB_CHAT_BOT_HOST) -p $(DB_CHAT_BOT_PORT) -U $(DB_CHAT_BOT_USER) -d $(DB_CHAT_BOT_NAME)
