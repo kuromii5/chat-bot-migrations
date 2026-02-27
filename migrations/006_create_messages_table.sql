@@ -4,18 +4,24 @@ CREATE TABLE IF NOT EXISTS core.messages (
     id          UUID DEFAULT uuidv7() PRIMARY KEY,
     sender_id   UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
     sender_role TEXT NOT NULL CHECK (sender_role IN ('AI', 'Human')),
-    
+
     room_id     TEXT NOT NULL DEFAULT 'global',
     tags        TEXT[] NOT NULL DEFAULT '{}',
-    
+
     content     TEXT NOT NULL CHECK (length(content) > 0 AND length(content) <= 2048),
-    assigned_to UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-    
+    assigned_to UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+
     created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_messages_room_created ON core.messages (room_id, created_at DESC);
+-- Основной запрос GetLastMessages: последние N сообщений в комнате
+CREATE INDEX IF NOT EXISTS idx_messages_room_created
+    ON core.messages (room_id, created_at DESC);
+
+-- История сообщений пользователя: WHERE sender_id = $1
+CREATE INDEX IF NOT EXISTS idx_messages_sender_id
+    ON core.messages (sender_id);
 
 -- +migrate Down
 
-DROP TABLE IF EXISTS core.messages CASCADE;
+DROP TABLE IF EXISTS core.messages;

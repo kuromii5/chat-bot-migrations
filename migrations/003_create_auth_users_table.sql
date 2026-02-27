@@ -13,6 +13,11 @@ CREATE TABLE IF NOT EXISTS auth.users (
     deleted_at    TIMESTAMPTZ
 );
 
+-- Триггер updated_at подключается в миграции 005,
+-- после создания функции core.updated_at_column().
+
 -- +migrate Down
 
-DROP TABLE IF EXISTS auth.users CASCADE;
+-- Без CASCADE: если зависимые таблицы (refresh_tokens, profiles) ещё существуют,
+-- откат упадёт с ошибкой — это правильное поведение, принудительный откат по порядку.
+DROP TABLE IF EXISTS auth.users;
