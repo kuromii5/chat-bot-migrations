@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS core.outbox_events (
 
 
     status         TEXT        NOT NULL DEFAULT 'pending'
-                               CHECK (status IN ('pending', 'processing', 'published', 'failed', 'dead')),
+                               CHECK (status IN ('pending', 'processing', 'published', 'dead')),
 
     -- Retry-механика с экспоненциальным backoff
     attempts       INT         NOT NULL DEFAULT 0,
