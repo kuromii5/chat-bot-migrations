@@ -1,27 +1,19 @@
 FROM golang:1.25.6-alpine
 
-RUN go install github.com/rubenv/sql-migrate/...@latest
+# Pin the tool: installing "@latest" made image builds non-reproducible.
+ARG SQL_MIGRATE_VERSION=v1.8.1
+RUN go install github.com/rubenv/sql-migrate/sql-migrate@${SQL_MIGRATE_VERSION}
 
-# for envsubst
+# envsubst is used to inject schema/role names into dbconfig.yml and *.sql.
 RUN apk add --no-cache gettext
 
 WORKDIR /migrations
-
 COPY . .
 
-RUN cat <<EOF > /entrypoint.sh 
-#!/bin/sh
-envsubst < dbconfig.yml > dbconfig.yml.tmp && mv dbconfig.yml.tmp dbconfig.yml
-
-for f in migrations/*.sql; do
-    if [ -f "\$f" ]; then
-        envsubst < "\$f" > "\$f.tmp" && mv "\$f.tmp" "\$f"
-    fi
-done
-
-sql-migrate up -env=chat-bot-db
-EOF
-
+# Kept as a separate file on purpose: a RUN heredoc is parsed by the Dockerfile
+# frontend (BuildKit) instead of /bin/sh, which produced an empty entrypoint
+# and "exec format error" at container start.
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
